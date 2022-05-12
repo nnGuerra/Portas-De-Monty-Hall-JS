@@ -1,0 +1,13 @@
+.porta {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  background-color :#AAA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#portas{
+  display: flex;
+}
