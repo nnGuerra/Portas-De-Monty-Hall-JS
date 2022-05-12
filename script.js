@@ -10,13 +10,14 @@ const fases = {
 
 let fase = fases.ESCOLHA;
 let portaSelecionada;
+let portaRevelada;
 
 function escolhe_porta(){
   if(fase !== fases.ESCOLHA){
     return;
   }
-  portaSelecionada = this.index;
-  revela_uma_porta_sem_premio();
+  portaSelecionada = this;
+  revela_porta_sem_premio();
 }
 
 function cria_porta(){
@@ -37,24 +38,74 @@ function escolhe_aleatorio(arr){
   return arr[Math.floor(Math.random()*arr.length)];
 }
 
-function revela_uma_porta_sem_premio(){
+function revela_porta_sem_premio(){
   fase = fases.REVELA_ERRADA;
   let resultadosPossiveis = [];
-  for(let i = 0;i < portas.length;i++){
-    if(i != portaSelecionada && portas[i].conteudo === lixo){
+  for(let i = 0;i < portas.length; i++){
+    if(portas[i] != portaSelecionada && portas[i].conteudo === lixo){
       resultadosPossiveis.push(i);
     }
   }
-  portas[escolhe_aleatorio(resultadosPossiveis)].innerHTML = lixo;
-  trocar_porta_escolhida();
+  let portaAleatoria = escolhe_aleatorio(resultadosPossiveis);
+  portaRevelada = portas[portaAleatoria];
+  portaRevelada.innerHTML = lixo;
+  pergunta_se_deve_trocar_porta();
 }
 
-function trocar_porta_escolhida(){
+function pergunta_se_deve_trocar_porta(){
   fase = fases.TROCA;
   document.getElementById("escolhaTroca").style.display = "initial";
 }
 
-cria_porta();
-cria_porta();
-cria_porta();
-adiciona_premio_a_porta(escolhe_aleatorio(portas));
+function trocar_porta_escolhida(){
+  if(fase !== fases.TROCA){
+    return;
+  }
+  document.getElementById("escolhaTroca").style.display = "none";
+  for(let i = 0; i < portas.length; i++){
+    if(i!== portaSelecionada.index && i!== portaRevelada.index){
+      portaSelecionada = portas[i];
+      break;
+    }
+  }
+  revela_portas();
+}
+
+function revela_portas(){
+  fase = fases.REVELA_CERTA;
+  document.getElementById("escolhaTroca").style.display = "none";
+  for(let i = 0; i < portas.length; i++){
+    portas[i].innerHTML = portas[i].conteudo;
+  }
+  analisa_vitoria();
+}
+
+function analisa_vitoria(){
+  if(portaSelecionada.conteudo === premio){
+    document.getElementById("recomecarParagrafo").innerHTML = "VOCÊ VENCEU!";
+  }
+  else{
+    document.getElementById("recomecarParagrafo").innerHTML = "VOCÊ PERDEU!";
+  }
+  document.getElementById("recomecar").style.display = "initial";
+}
+
+function reverter_para_comeco(){
+  for(let i = 0; i < portas.length; i++){
+    portas[i].innerHTML = "";
+    portas[i].conteudo = lixo;
+  }
+  document.getElementById("recomecar").style.display = "none";
+  document.getElementById("escolhaTroca").style.display = "none";
+  adiciona_premio_a_porta(escolhe_aleatorio(portas));
+  fase = fases.ESCOLHA;
+}
+
+
+document.getElementById("recomecarBotao").addEventListener("click", reverter_para_comeco);
+document.getElementById("trocaSim").addEventListener("click", trocar_porta_escolhida);
+document.getElementById("trocaNao").addEventListener("click", revela_portas);
+for(let p = 0; p < 3; p++){
+  cria_porta();
+}
+reverter_para_comeco();
