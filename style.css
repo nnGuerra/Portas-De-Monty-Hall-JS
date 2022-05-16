@@ -2,10 +2,22 @@
   width: 100px;
   height: 100px;
   margin: 10px;
-  background-color :#AAA;
+  background-color :#AAAAAA;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.portaEscolhida{
+  background-color :#0000FF;
+}
+
+.portaErrada{
+  background-color :#FF0000;
+}
+
+.portaCerta{
+  background-color :#00FF00;
 }
 
 #portas{
