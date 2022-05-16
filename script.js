@@ -86,9 +86,11 @@ function revela_portas(){
 
 function analisa_vitoria(){
   if(portaSelecionada.conteudo === premio){
+    portaSelecionada.classList.add('portaCerta');
     document.getElementById("recomecarParagrafo").innerHTML = "VOCÊ VENCEU!";
   }
   else{
+    portaSelecionada.classList.add('portaErrada');
     document.getElementById("recomecarParagrafo").innerHTML = "VOCÊ PERDEU!";
   }
   document.getElementById("recomecar").style.display = "initial";

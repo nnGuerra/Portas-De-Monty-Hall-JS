@@ -16,6 +16,9 @@
   background-color :#FF0000;
 }
 
+.portaCerta{
+  background-color :#00FF00;
+}
 
 #portas{
   display: flex;
